@@ -1,18 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 
 import reportWebVitals from './reportWebVitals';
 import MainRoute from './components/Router';
-import BankContextProvider from './contexts/BankContext';
+import store from './store/createSore';
+
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <BankContextProvider>
-        <MainRoute />      
-      </BankContextProvider>
+    <BrowserRouter>  
+      <Provider store={store}>
+        <MainRoute />  
+      </Provider>  
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')

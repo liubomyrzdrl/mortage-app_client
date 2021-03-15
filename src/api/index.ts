@@ -1,10 +1,15 @@
 import axios from 'axios'
 import { BankType } from "../types"
 
+type ApiDateFetchType =  Array<BankType> | BankType | boolean
+
+type ApiFetchBanksType = {
+  data: Array<BankType>
+  [propName: string]:  any
+}
 
 export const ApiBank = {    
-    fetchBanks(): Promise<BankType> {
-      // return axios.get('/banks')
+    fetchBanks(): Promise<ApiFetchBanksType> {
       return axios.get('/banks')
     },
 
