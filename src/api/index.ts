@@ -1,10 +1,14 @@
 import axios from 'axios'
 import { BankType } from "../types"
 
-type ApiDateFetchType =  Array<BankType> | BankType | boolean
+ 
 
 type ApiFetchBanksType = {
   data: Array<BankType>
+  [propName: string]:  any
+}
+type ApiFetchBankType = {
+  data:  BankType
   [propName: string]:  any
 }
 
@@ -13,15 +17,15 @@ export const ApiBank = {
       return axios.get('/banks')
     },
 
-    createBank( bank: BankType): Promise<BankType> {
+    createBank( bank: BankType): Promise<ApiFetchBankType> {
       return axios.post('/banks', bank)
     },
 
-    updateBank(id: number, bank: BankType): Promise<BankType> {
-        return axios.post(`/banks${id}`, bank)
+    updateBank(id: string, bank: BankType): Promise<ApiFetchBankType> {
+        return axios.put(`/bank/${id}`, bank)
     },
 
-    deleteBank(id: number): Promise<boolean> {
-        return axios.delete(`/banks${id}`)
+    deleteBank(id: string): Promise<boolean> {
+        return axios.delete(`/bank/${id}`)
     }
 }
