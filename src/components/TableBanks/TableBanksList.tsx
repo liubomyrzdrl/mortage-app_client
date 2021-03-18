@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../../scss/style.scss";
-import { RootStore, BankType } from "../../types";
+import { BankType } from "../../types";
 import { makeStyles } from "@material-ui/core/styles";
 import { createData } from "../../utils/createData";
 import {
@@ -85,7 +85,6 @@ const TableBanksList: React.FC<TableBanksProps> = ({
   async function handleSubmit(bank: BankType) {
     try {
       await createBank(bank);
-
       setIsAddBank(!isAddBank);
     } catch (error) {
       console.log("error create bank", error);
@@ -94,9 +93,7 @@ const TableBanksList: React.FC<TableBanksProps> = ({
 
   async function handleUpdate(bank: any): Promise<boolean> {
     try {
-      const res = await updateBank(bank);
-      // debugger
-      console.log("UPDATE BANK FROM TABLE", res);
+       await updateBank(bank)
       return true;
     } catch (error) {
       console.log("error create bank", error);
@@ -163,6 +160,4 @@ const TableBanksList: React.FC<TableBanksProps> = ({
   );
 };
 
-
 export default TableBanksList;
-// export default connect(mapStateToProps)(TableBanks);

@@ -34,19 +34,17 @@ import { BankType } from "../../types";
 //    isError?: boolean | any
 // }
 export interface StateType {
-    items?: Array<BankType>
+    items: Array<BankType>
     isLoading: boolean
     isSuccess?: boolean
-    isError?: boolean | any
+    isError?: boolean | null
 }
 
-const INITIAL_STATE: StateType = {
- 
+const INITIAL_STATE: StateType = { 
     items: [],
     isLoading: false,
     isSuccess: false,
-    isError: null,
-  
+    isError: null,  
 };
 
  const banksReducer = handleActions<StateType, CombinedPayloads>(
@@ -54,9 +52,7 @@ const INITIAL_STATE: StateType = {
     [getBanksStart.toString()]: (state): StateType => {
       return {
         ...state,
-   
-            isLoading: true,
-      
+        isLoading: true,      
       };
     },
 
@@ -66,18 +62,15 @@ const INITIAL_STATE: StateType = {
         ...state,  
           items: payload,
           isLoading: false,
-          isSuccess: true
-       
+          isSuccess: true       
       };
     },
 
     [getBanksError.toString()]: (state): StateType => {
       return {
-        ...state,
- 
+        ...state, 
           isLoading: false,
-          isError: null
- 
+          isError: null 
       };
     },
 
@@ -85,21 +78,22 @@ const INITIAL_STATE: StateType = {
     [createBankStart.toString()]: (state): StateType => {
       console.log("createBankStart", state)
       return {
-        ...state,
-    
-          isLoading: true,
+        ...state,    
+        isLoading: true,
    
       };
     },
 
     [createBankSuccess.toString()]: (state,  { payload }:  Action<CreateBankSuccessPayload>): StateType => {
-      console.log('CreateBankSuccessPayload', payload)
+       //state.items.unshift(payload)
+       // state.items.concat(payload)
+      console.log('CreateBankSuccessPayload',)
+  
       return {
-        ...state,
-    
-          items: state.items?.concat(payload),
-          isLoading: false,
-          isSuccess: true,
+        ...state,    
+        items: [payload, ...state.items ],
+        isLoading: false,
+        isSuccess: true,
  
       };
     },

@@ -1,35 +1,35 @@
 import React, { useState } from "react";
-import { TableRow, TableCell, TextField, makeStyles } from "@material-ui/core";
+import { TableRow, TableCell, TextField, Button } from "@material-ui/core";
 import UpdateIcon from "@material-ui/icons/Update";
 import DeleteIcon from "@material-ui/icons/Delete";
 import CancelIcon from "@material-ui/icons/Cancel";
 import red from "@material-ui/core/colors/red";
 import blue from "@material-ui/core/colors/blue";
 import green from "@material-ui/core/colors/green";
+import grey from "@material-ui/core/colors/grey";
 import { BankType } from "../../types";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
-import CircularProgress from '@material-ui/core/CircularProgress';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  wrapper: {
-    margin: theme.spacing(1),
-    position: 'relative',
-  },
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     display: 'flex',
+//     alignItems: 'center',
+//   },
+//   wrapper: {
+//     margin: theme.spacing(1),
+//     position: 'relative',
+//   },
   
  
-  iconProgress: {
-    color: green[500],
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    marginTop: -12,
-    marginLeft: -12,
-  },
-}));
+//   iconProgress: {
+//     color: green[500],
+//     position: 'absolute',
+//     top: '50%',
+//     left: '50%',
+//     marginTop: -12,
+//     marginLeft: -12,
+//   },
+// }));
 
 type TableItemType = BankType & {
   handleUpdate: (bank: BankType) => boolean;
@@ -48,15 +48,18 @@ const TableItem: React.FC<TableItemType> = ({
 }) => {
   const [isUpdate, setIsUpdate] = useState(false);
   const [loading, setIsLoading] = useState(false);
+  // const [canselTriger, setCancelTriger] = useState(false);
 
   const [bName, setBankName] = useState<string>(name);
   const [iRate, setIntrestRate] = useState<number>(intrestRate);
   const [mLoan, setMaxLoan] = useState<number>(maxLoan);
   const [mPaymant, setMinPaymant] = useState<number>(minPaymant);
   const [lTerm, setLoanTerm] = useState<number>(loanTerm);
-  console.log("_Id", _id);
+ 
 
-  const classes = useStyles();
+  let validateOkButtonEmpty =  bName === "" || iRate === 0 || mLoan === 0 || mPaymant === 0 || lTerm === 0
+  // console.log("validateOkButtonEmpty", validateOkButtonEmpty ) 
+  // console.log("Props", bName, iRate, mLoan, mPaymant, lTerm )
 
   function hUpdate() {
     let updatedBank: BankType = {
@@ -74,6 +77,29 @@ const TableItem: React.FC<TableItemType> = ({
       setIsUpdate(!isUpdate)
     }
   }
+  function handleCancel() {
+    if(bName !== name) {
+        setBankName(name)
+    }
+    
+    if(iRate !== intrestRate) {
+        setIntrestRate(intrestRate)
+    }
+
+    if(mLoan !== maxLoan) {
+        setMaxLoan(maxLoan)
+    }
+
+    if(mPaymant !== minPaymant) {
+        setMinPaymant(minPaymant)
+    }
+
+    if(lTerm !== loanTerm) {
+        setLoanTerm(loanTerm)
+    }
+      setIsUpdate(!isUpdate)
+  }
+
 
   function handleChangeBankName(e: React.ChangeEvent<HTMLInputElement>) {
     setBankName(e.target.value);
@@ -107,6 +133,8 @@ const TableItem: React.FC<TableItemType> = ({
           <TableCell component="th" scope="row" align="center">
             <TextField
               placeholder="bank name"
+              error={bName === undefined}
+              helperText={ bName === "" && "Empty input is not allowed"}
               multiline
               rowsMax={4}
               value={bName}
@@ -117,20 +145,38 @@ const TableItem: React.FC<TableItemType> = ({
           <TableCell align="center">
             <TextField
               id="standard-size-small"
+              value={mPaymant ? mPaymant : ""}
+              error={mPaymant === 0}
+              helperText={ mPaymant === 0 && "Empty input is not allowed"}
               type="number"
-              inputProps={{ style: { textAlign: "center" } }}
+              InputProps={{
+                inputProps: { 
+                     min: 0,
+                     style: {
+                       textAlign: "center"
+                     } 
+                }
+              }}
               placeholder="min down pay"
               size="small"
-              value={mPaymant}
               onChange={handleMinPaymant}
             />
           </TableCell>
           <TableCell align="center">
             <TextField
               id="standard-size-small"
-              value={mLoan}
+              value={mLoan ? maxLoan : ""}
+              error={mLoan === 0}
+              helperText={ mLoan === 0 && "Empty input is not allowed"}
               type="number"
-              inputProps={{ style: { textAlign: "center" } }}
+              InputProps={{
+                inputProps: { 
+                     min: 0,
+                     style: {
+                       textAlign: "center"
+                     } 
+                }
+              }}
               placeholder="max loan"
               size="small"
               rowsMax={4}
@@ -140,9 +186,18 @@ const TableItem: React.FC<TableItemType> = ({
           <TableCell align="center">
             <TextField
               type="number"
-              value={lTerm}
+              value={lTerm ? lTerm : ""}
+              error={lTerm === 0}
+              helperText={ lTerm === 0 && "Empty input is not allowed"}
               id="standard-size-small"
-              inputProps={{ style: { textAlign: "center" } }}
+              InputProps={{
+                inputProps: { 
+                     min: 0,
+                     style: {
+                       textAlign: "center"
+                     } 
+                }
+              }}
               placeholder="loan term"
               size="small"
               onChange={handleLoanTerm}
@@ -151,9 +206,18 @@ const TableItem: React.FC<TableItemType> = ({
           <TableCell align="center">
             <TextField
               type="number"
-              value={iRate}
+              value={iRate ? iRate : "" }
+              error={iRate === 0}
+              helperText={ iRate === 0 && "Empty input is not allowed"}
               id="standard-size-small"
-              inputProps={{ style: { textAlign: "center" } }}
+              InputProps={{
+                inputProps: { 
+                     min: 0,
+                     style: {
+                       textAlign: "center"
+                     } 
+                }
+              }}
               placeholder="intrest rate"
               size="small"
               onChange={handleIntrestRate}
@@ -164,12 +228,15 @@ const TableItem: React.FC<TableItemType> = ({
       <TableCell align="center">
         {isUpdate ? (
           <>
-          <AddCircleIcon
-            className="addCircleIcon"
-            style={{ color: green[500], cursor: "pointer" }}
+          <Button 
+           // disabled ={validateOkButtonEmpty}
             onClick={() => hUpdate()}
-          />
-          {loading && <CircularProgress size={24} className={classes.iconProgress} />}
+          >
+            <AddCircleIcon
+              className="addCircleIcon"
+              style={ validateOkButtonEmpty ? { color: grey[500]} : { color: green[500], cursor: "pointer" } }
+            />
+          </Button>
           </>
         ) : (
           <UpdateIcon
@@ -182,7 +249,7 @@ const TableItem: React.FC<TableItemType> = ({
         {isUpdate ? (
           <CancelIcon
             style={{ color: red[500], cursor: "pointer" }}
-            onClick={() => setIsUpdate(!isUpdate)}
+            onClick={() => handleCancel()}
           />
         ) : (
           <DeleteIcon
