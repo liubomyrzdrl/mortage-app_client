@@ -112,7 +112,7 @@ const TableBanksList: React.FC<TableBanksProps> = ({
     return <div>Loading ...</div>;
   }
   return (
-    <Box className="container" display="flex" flexDirection="column">
+    <Box  display="flex" flexDirection="column">
       {!isAddBank && (
         <AddBoxIcon
           style={{

@@ -6,10 +6,8 @@ import "./App.css"
 
 function App() {
   return (
-    <div className="App">
-        <Layout>
-            <Main />
-        </Layout>
+    <div className="App"> 
+          <Main />     
     </div>
   );
 }
