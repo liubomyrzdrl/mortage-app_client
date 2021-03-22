@@ -28,6 +28,8 @@ const MortageCalculator: React.FC<MortageCalculatorPropsType> = ({
   const [bank, setBank] = useState("")
   const [mLoan, setMLoan] = useState()
   const [mPaymant, setMPaymant] = useState()
+  const [iRate, setIntrestRate] = useState<number>();
+  const [lTerm, setLoanTerm] = useState<number>();
   const [mortageMonthPay, setMortageMonthPay] = useState(0)
 
   const classes = useStyles();
@@ -44,13 +46,29 @@ const MortageCalculator: React.FC<MortageCalculatorPropsType> = ({
     return <Layout>...Loading</Layout>;
   }
 
-  function handleChange(e) {
-    console.log("Event Bank", e.target.value);
+  function calculateMortage() {
+    let intrestRateNumber = iRate / 100
+    let nPer = lTerm * 12;
+    let intrestMonthly = intrestRateNumber / 12;  
+    let intrestMonthlyPlus = (1 + intrestMonthly);
+    let powIntrestMonth = Math.pow(intrestMonthlyPlus, nPer);
+    let numerator = mLoan *   intrestMonthly * powIntrestMonth;
+  
+    let denominator = Math.pow(1 + intrestMonthly, nPer) - 1;
+
+    let payment =  numerator / denominator;
+    setMortageMonthPay(Number(payment.toFixed(2)));
+    
+  }
+
+  function handleChange(e) {    
     setBank(e.target.value);
     const filteredBank = banks.find(b => b.name === e.target.value)
+    console.log("Event Bank",filteredBank);
     setMLoan(filteredBank.maxLoan)
     setMPaymant(filteredBank.minPaymant)
-
+    setIntrestRate(filteredBank.intrestRate)
+    setLoanTerm(filteredBank.loanTerm)
   }
 
   function handleMaxLoan(e) {
@@ -119,6 +137,42 @@ const MortageCalculator: React.FC<MortageCalculatorPropsType> = ({
           onChange={handleMinPaymant}
           helperText="down pay"
         />
+           <TextField
+              type="number"
+              value={iRate ? iRate : "" }
+              error={iRate === 0}
+              helperText={ iRate === 0 && "Empty input is not allowed"}
+              id="standard-size-small"
+              InputProps={{
+                inputProps: { 
+                     min: 0,
+                     style: {
+                       textAlign: "center"
+                     } 
+                }
+              }}
+              placeholder="intrest rate"
+              size="small"
+        
+            />
+             <TextField
+              type="number"
+              value={lTerm ? lTerm : ""}
+              error={lTerm === 0}
+              helperText={ lTerm === 0 && "Empty input is not allowed"}
+              id="standard-size-small"
+              InputProps={{
+                inputProps: { 
+                     min: 0,
+                     style: {
+                       textAlign: "center"
+                     } 
+                }
+              }}
+              placeholder="loan term"
+              size="small"
+         
+            />
       </Box>
       <Box>
       <Button
@@ -126,6 +180,7 @@ const MortageCalculator: React.FC<MortageCalculatorPropsType> = ({
         color="primary"
         className={classes.button}
         endIcon={<AddIcon />}
+        onClick={calculateMortage}
       >
        Calculate
       </Button>

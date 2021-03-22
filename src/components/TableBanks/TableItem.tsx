@@ -165,7 +165,7 @@ const TableItem: React.FC<TableItemType> = ({
           <TableCell align="center">
             <TextField
               id="standard-size-small"
-              value={mLoan ? maxLoan : ""}
+              value={mLoan ? mLoan : ""}
               error={mLoan === 0}
               helperText={ mLoan === 0 && "Empty input is not allowed"}
               type="number"
