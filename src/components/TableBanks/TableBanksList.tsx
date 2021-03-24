@@ -82,6 +82,7 @@ const TableBanksList: React.FC<TableBanksProps> = ({
     )
   );
 
+  console.log('rows', rows)
   async function handleSubmit(bank: BankType) {
     try {
       await createBank(bank);

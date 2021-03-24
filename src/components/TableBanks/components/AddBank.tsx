@@ -21,21 +21,25 @@ const AddBank: React.FC<AddBankFormType> = ({ handleSubmit, setIsAddBank }) => {
   const [minPaymant, setMinPaymant] = useState<number>();
   const [loanTerm, setLoanTerm] = useState<number>();
 
-  let validateOkButtonEmpty = valOkButtonEmpty(
-    bankName,
-    intrestRate,
-    maxLoan,
-    minPaymant,
-    loanTerm
-  );
-  let validateOkButtonUndefined = valOkButtonUndefined(
-    bankName,
-    intrestRate,
-    maxLoan,
-    minPaymant,
-    loanTerm
-  );
-
+  // let validateOkButtonEmpty = valOkButtonEmpty(
+  //   bankName,
+  //   intrestRate,
+  //   maxLoan,
+  //   minPaymant,
+  //   loanTerm
+  // );
+  // let validateOkButtonUndefined = valOkButtonUndefined(
+  //   bankName,
+  //   intrestRate,
+  //   maxLoan,
+  //   minPaymant,
+  //   loanTerm
+  // );
+  let validateOkButtonEmpty = bankName === "" || intrestRate === 0 || maxLoan === 0 || minPaymant === 0 || loanTerm === 0;
+  let validateOkButtonUndefined =   bankName === undefined || maxLoan === undefined || intrestRate === undefined || minPaymant === undefined ||loanTerm === undefined
+   
+    console.log('validateOkButtonEmpty', validateOkButtonEmpty)
+    console.log('validateOkButtonUndefined', validateOkButtonUndefined)
   const onSubmit = () => {
     handleSubmit({
       name: bankName,
@@ -147,7 +151,7 @@ const AddBank: React.FC<AddBankFormType> = ({ handleSubmit, setIsAddBank }) => {
       </TableCell>
       <TableCell align="center">
         <Button
-          disabled={validateOkButtonEmpty || validateOkButtonUndefined}
+          disabled={validateOkButtonEmpty }
           onClick={() => onSubmit()}
         >
           <AddCircleIcon

@@ -2,25 +2,25 @@ export const valOkButtonEmpty = (
   bankName: string,
   intrestRate: number,
   maxLoan: number,
-  minPayment: number,
+  minPaymant: number,
   loanTerm: number
 ) => {
   return (
-    bankName === "" ||  intrestRate === 0 || maxLoan === 0 || minPayment || loanTerm === 0
+    bankName === "" ||  intrestRate === 0 || maxLoan === 0 || minPaymant || loanTerm === 0
   );
 };
 export const valOkButtonUndefined = (
   bankName: string,
   maxLoan: number,
   intrestRate: number,
-  minPayment: number,
+  minPaymant: number,
   loanTerm: number
 ) => {
   return (
     bankName === undefined ||
     maxLoan === undefined ||
     intrestRate === undefined ||
-    minPayment === undefined ||
+    minPaymant === undefined ||
     loanTerm === undefined
   );
 };

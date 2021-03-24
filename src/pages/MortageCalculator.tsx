@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { BankType, RootStore } from "../types";
 import { getBanks } from "../modules/banks/bankOperation";
 import AddIcon from '@material-ui/icons/Add';
+import MonthPaymantTable from "../components/MonthPaymantTable";
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -31,7 +32,14 @@ const MortageCalculator: React.FC<MortageCalculatorPropsType> = ({
   const [iRate, setIntrestRate] = useState<number>();
   const [lTerm, setLoanTerm] = useState<number>();
   const [mortageMonthPay, setMortageMonthPay] = useState(0)
+  const [intrestRange, setIntrestRange] = useState([])
+  const [equetyRange, setEquetyRange] = useState([])
+  const [loanBalanceRange, setLoanBalanceRange] = useState([])
 
+  let intrestRateNumber = iRate / 100
+  let nPer = lTerm * 12;
+  let intrestMonthly = intrestRateNumber / 12;  
+  let MAX = mLoan + mPaymant
   const classes = useStyles();
 
   console.log("Banks", banks);
@@ -47,9 +55,8 @@ const MortageCalculator: React.FC<MortageCalculatorPropsType> = ({
   }
 
   function calculateMortage() {
-    let intrestRateNumber = iRate / 100
-    let nPer = lTerm * 12;
-    let intrestMonthly = intrestRateNumber / 12;  
+    
+    
     let intrestMonthlyPlus = (1 + intrestMonthly);
     let powIntrestMonth = Math.pow(intrestMonthlyPlus, nPer);
     let numerator = mLoan *   intrestMonthly * powIntrestMonth;
@@ -58,7 +65,34 @@ const MortageCalculator: React.FC<MortageCalculatorPropsType> = ({
 
     let payment =  numerator / denominator;
     setMortageMonthPay(Number(payment.toFixed(2)));
+    calcTable(payment.toFixed(2))
     
+  }
+  function calcTable(mortagePayment) {
+     let loanBalance =  mLoan;
+     
+      let arr = [] 
+      let equty = []
+      let loan = []
+      while(loanBalance > 0 ) {
+      let res = loanBalance * intrestMonthly;
+      //debugger
+      // setIntrestRange(() => intrestRange.concat(res));
+      console.log('res', loanBalance)
+      arr.push(res)
+      equty.push(MAX - loanBalance)
+ 
+       loanBalance = loanBalance - Number(mortagePayment) + res;
+       if(loanBalance > 0) {
+          loan.push(loanBalance)
+       } 
+       console.log('loanBalance', loanBalance)
+      }
+       setIntrestRange(arr)
+       setLoanBalanceRange(loan)
+       setEquetyRange(equty.slice(1, equty.length))
+       console.log('intrestRange', equty);
+     
   }
 
   function handleChange(e) {    
@@ -120,8 +154,6 @@ const MortageCalculator: React.FC<MortageCalculatorPropsType> = ({
         <TextField
           id="standard-size-small"
             value={mPaymant ? mPaymant : ""}
-          //   error={mPaymant === 0}
-          //   helperText={ mPaymant === 0 && "Empty input is not allowed"}
           label="Down pay"
           type="number"
           InputProps={{
@@ -186,6 +218,12 @@ const MortageCalculator: React.FC<MortageCalculatorPropsType> = ({
       </Button>
         <Box>Mortage month payment: {mortageMonthPay}</Box>
       </Box>
+      <MonthPaymantTable 
+        {...{ mortageMonthPay }}
+        {...{ intrestRange }}
+        {...{ loanBalanceRange }}
+        {...{ equetyRange }}
+      />
     </Layout>
   );
 };
