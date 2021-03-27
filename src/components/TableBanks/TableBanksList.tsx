@@ -12,6 +12,7 @@ import {
   TableRow,
   TableCell,
   TableSortLabel,
+  TablePagination,
   Box,
 } from "@material-ui/core";
 import TableItem from "./TableItem";
@@ -24,9 +25,9 @@ import green from "@material-ui/core/colors/green";
 type TableBanksProps = {
   isLoading: boolean;
   banks: Array<BankType>;
-  createBank: any;
-  updateBank: any;
-  deleteBank: any;
+  createBank: (bank: BankType) => Promise<boolean>;
+  updateBank: (bank: BankType) => Promise<boolean>;
+  deleteBank: (_id: string) => Promise<boolean>;
 };
 const headCells = [
   { id: "name", numeric: false, disablePadding: true, label: "Bank Name" },
@@ -61,6 +62,8 @@ const TableBanksList: React.FC<TableBanksProps> = ({
   deleteBank,
 }) => {
   const [isAddBank, setIsAddBank] = useState<boolean>(false);
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
   let useStyles;
   if (!isLoading) {
     useStyles = makeStyles({
@@ -81,8 +84,7 @@ const TableBanksList: React.FC<TableBanksProps> = ({
       b.intrestRate
     )
   );
-
-  console.log('rows', rows)
+  
   async function handleSubmit(bank: BankType) {
     try {
       await createBank(bank);
@@ -92,22 +94,31 @@ const TableBanksList: React.FC<TableBanksProps> = ({
     }
   }
 
-  async function handleUpdate(bank: any): Promise<boolean> {
+  async function handleUpdate(bank: BankType): Promise<boolean> {
     try {
-       await updateBank(bank)
-      return true;
+      const res = await updateBank(bank)
+       return res;
     } catch (error) {
       console.log("error create bank", error);
     }
   }
 
-  async function handleDelete(_id: any) {
+  async function handleDelete(_id: string) {
     try {
       await deleteBank(_id);
     } catch (error) {
       console.log("Delete Bank Error", error);
     }
   }
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
 
   if (isLoading) {
     return <div>Loading ...</div>;
@@ -157,6 +168,15 @@ const TableBanksList: React.FC<TableBanksProps> = ({
           </TableBody>
         </Table>
       </TableContainer>
+      <TablePagination
+          rowsPerPageOptions={[5, 10, 50]}
+          component="div"
+          count={rows.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onChangePage={handleChangePage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+        />
     </Box>
   );
 };

@@ -6,7 +6,6 @@ import {
   createBank,
   updateBank,
   deleteBank,
-  ThunkType,
 } from "../modules/banks/bankOperation";
 import { BankType, RootStore } from "../types";
 import TableBanksList from "./TableBanks/TableBanksList";
@@ -35,7 +34,6 @@ const BanksList: React.FC<BanksListPropsType> = ({
   if (isLoading) {
     return <div>Loading ...</div>;
   }
-
 
   return (
     <Box>

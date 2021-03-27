@@ -7,7 +7,6 @@ export function createDataIntrest(
   let arr = [];
   const range = intrestRange.length -1
   for (let i = 0; i <  range; i++) {
-    console.log(intrestRange[i]);
     let iR = intrestRange[i];
     let lR = loanBalanceRange[i];
     let eR = equetyRange[i];

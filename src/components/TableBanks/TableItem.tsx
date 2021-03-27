@@ -32,7 +32,7 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 // }));
 
 type TableItemType = BankType & {
-  handleUpdate: (bank: BankType) => boolean;
+  handleUpdate: (bank: BankType) => Promise<boolean> ;
   handleDelete: (_id: string) => void;
 };
 
@@ -61,7 +61,7 @@ const TableItem: React.FC<TableItemType> = ({
   // console.log("validateOkButtonEmpty", validateOkButtonEmpty ) 
   // console.log("Props", bName, iRate, mLoan, mPaymant, lTerm )
 
-  function hUpdate() {
+  async function hUpdate() {
     let updatedBank: BankType = {
       _id,
       name: bName,
@@ -71,7 +71,7 @@ const TableItem: React.FC<TableItemType> = ({
       loanTerm: lTerm,
     };
     setIsLoading(true)
-    const res = handleUpdate(updatedBank);
+    const res = await  handleUpdate(updatedBank);
     if(res) {
       setIsLoading(false)
       setIsUpdate(!isUpdate)
@@ -254,7 +254,7 @@ const TableItem: React.FC<TableItemType> = ({
         ) : (
           <DeleteIcon
             style={{ color: red[500], cursor: "pointer" }}
-            onClick={() => handleDelete(String(_id))}
+            onClick={() => handleDelete(_id)}
           />
         )}
       </TableCell>

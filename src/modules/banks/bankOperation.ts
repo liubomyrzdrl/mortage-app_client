@@ -52,9 +52,7 @@ export function createBank(bank: BankType,): ThunkType {
     try {
       dispatch(createBankStart());
       const data = await ApiBank.createBank(bank);
-      
-      console.log("GET STATE", getState())
-      console.log('createBank', data);
+
       dispatch(createBankSuccess(data.data));
     } catch (error) {
       dispatch(createBankError());
@@ -69,7 +67,6 @@ export function updateBank(bank: BankType): ThunkType {
     try {
       dispatch(updateBankStart());
       const data = await ApiBank.updateBank(String(bank._id), bank);
-      console.log('updateBank', data);
       dispatch(updateBankSuccess(data.data));
     } catch (error) {
       dispatch(updateBankError());
@@ -83,8 +80,8 @@ export function deleteBank(_id: string): ThunkType {
   ) {
     try {
       dispatch(deleteBankStart());
-        const res =await ApiBank.deleteBank(_id);
-        console.log('deleteBank', res);
+        await ApiBank.deleteBank(_id);
+        
       dispatch(deleteBankSuccess(_id))
     } catch (error) {
       dispatch(deleteBankError());
