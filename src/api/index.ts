@@ -23,10 +23,10 @@ export const ApiBank = {
     },
 
     updateBank(id: string, bank: BankType): Promise<ApiFetchBankType> {
-        return axios.put(`https://mortage-calculator.herokuapp.com/banks/${id}`, bank)
+        return axios.put(`https://mortage-calculator.herokuapp.com/bank/${id}`, bank)
     },
 
     deleteBank(id: string): Promise<boolean> {
-        return axios.delete(`https://mortage-calculator.herokuapp.com/banks/${id}`)
+        return axios.delete(`https://mortage-calculator.herokuapp.com/bank/${id}`)
     }
 }
