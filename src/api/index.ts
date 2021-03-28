@@ -14,18 +14,19 @@ type ApiFetchBankType = {
 
 export const ApiBank = {    
     fetchBanks(): Promise<ApiFetchBanksType> {
-      return axios.get('/banks')
+      return axios.get('https://mortage-calculator.herokuapp.com/banks')
+      // return axios.get('/banks')
     },
 
     createBank( bank: BankType): Promise<ApiFetchBankType> {
-      return axios.post('/banks', bank)
+      return axios.post('https://mortage-calculator.herokuapp.com/banks', bank)
     },
 
     updateBank(id: string, bank: BankType): Promise<ApiFetchBankType> {
-        return axios.put(`/bank/${id}`, bank)
+        return axios.put(`https://mortage-calculator.herokuapp.com/banks/${id}`, bank)
     },
 
     deleteBank(id: string): Promise<boolean> {
-        return axios.delete(`/bank/${id}`)
+        return axios.delete(`https://mortage-calculator.herokuapp.com/banks/${id}`)
     }
 }
