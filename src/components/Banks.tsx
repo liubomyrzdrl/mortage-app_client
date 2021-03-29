@@ -14,9 +14,9 @@ interface BanksListPropsType {
   get: any;
   isLoading: boolean;
   banks: Array<BankType>;
-  createBank: any;
-  updateBank: any;
-  deleteBank: any;
+  createBank:(bank: BankType) => Promise<boolean>;
+  updateBank: (bank: BankType) => Promise<boolean>;
+  deleteBank: (_id: string) => Promise<boolean>;
 }
 
 const BanksList: React.FC<BanksListPropsType> = ({

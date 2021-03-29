@@ -23,11 +23,11 @@ import AddBank from "./components/AddBank";
 import green from "@material-ui/core/colors/green";
 
 type TableBanksProps = {
-  isLoading: boolean;
-  banks: Array<BankType>;
-  createBank: (bank: BankType) => Promise<boolean>;
-  updateBank: (bank: BankType) => Promise<boolean>;
-  deleteBank: (_id: string) => Promise<boolean>;
+  isLoading: boolean
+  banks: Array<BankType>
+  createBank: (bank: BankType) => Promise<boolean>
+  updateBank: (bank: BankType) => Promise<boolean>
+  deleteBank: (_id: string) => Promise<boolean>
 };
 const headCells = [
   { id: "name", numeric: false, disablePadding: true, label: "Bank Name" },
